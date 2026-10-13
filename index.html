@@ -37,6 +37,7 @@ header p{margin:4px 0 0;opacity:.85;font-size:14px}
 .field label{display:block;font-size:13px;color:var(--mute);margin-bottom:4px}
 .money{position:relative}
 .money input{font:800 28px 'Noto Sans Thai';width:260px;max-width:100%;padding:8px 48px 8px 14px;border:2px solid var(--line);border-radius:12px;color:var(--ink)}
+.money input::placeholder{font-weight:800;color:#c3c6d4;opacity:1}
 .money input:focus{outline:none;border-color:#7b4ff0}
 .money span{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--mute);font-weight:500}
 .tab{font:500 14px 'Noto Sans Thai';border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--ink)}
@@ -107,7 +108,7 @@ footer{text-align:center;color:var(--mute);font-size:12px;padding:10px 16px 30px
   <div class="inputrow">
     <div class="field">
       <label for="price" id="plabel">ราคาเครื่อง iPhone (บาท)</label>
-      <div class="money"><input id="price" inputmode="numeric" placeholder="เช่น 32,900" autocomplete="off"><span>฿</span></div>
+      <div class="money"><input id="price" inputmode="numeric" placeholder="กรอกราคาเครื่อง" autocomplete="off"><span>฿</span></div>
     </div>
   </div>
   <div class="tabs" id="tabs"></div>
@@ -260,7 +261,7 @@ MODELS['Other Device']=(()=>{
 
 const $=id=>document.getElementById(id);
 const fmt=n=>n.toLocaleString('th-TH',{minimumFractionDigits:Number.isInteger(n)?0:2,maximumFractionDigits:2});
-let tab='all', model=MODELS['iPhone 17']?'iPhone 17':Object.keys(MODELS)[0];
+let tab='all', model=MODELS['iPhone 18']?'iPhone 18':Object.keys(MODELS)[0];
 
 // รายละเอียดแพ็กเกจตามค่าบริการรายเดือน: [เน็ต 5G, ความเร็วหลังสปีดหมด, โทรทุกเครือข่าย(นาที)]
 const UNL=['ไม่จำกัด','Unlimited Max Speed'];
