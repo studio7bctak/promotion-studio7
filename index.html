@@ -301,7 +301,7 @@ Object.keys(MODELS).forEach(m=>{
   b.onclick=()=>{tab=id;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));render()};
   $('tabs').appendChild(b);
 });
-[29900,35900,42900,48900,59900].forEach(v=>{
+[25900,29900,32900,35900,39900,42900,48900,59900].forEach(v=>{
   const b=document.createElement('button');b.textContent=fmt(v);
   b.onclick=()=>{$('price').value=v.toLocaleString('en-US');render()};
   $('quick').appendChild(b);
