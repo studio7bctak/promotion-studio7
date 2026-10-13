@@ -63,6 +63,10 @@ section.group{max-width:1100px;margin:0 auto 24px;padding:0 16px}
 .break{font-size:12px;color:var(--mute);background:#f6f7fb;border-radius:8px;padding:6px 8px;margin-top:6px}
 .min{font-size:12px;color:var(--mute)}
 .warn{font-size:12px;color:#b45309;font-weight:500}
+.pkginfo{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center}
+.pkginfo>div{background:#f6f7fb;border-radius:8px;padding:6px 4px}
+.pkginfo .lbl{display:block;font-size:10.5px;line-height:1.25}
+.pkginfo b{font-size:13px}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:11px;background:#f1f2f7;color:var(--mute);border-radius:6px;padding:1px 8px}
 footer{text-align:center;color:var(--mute);font-size:12px;padding:10px 16px 30px}
@@ -232,6 +236,22 @@ const $=id=>document.getElementById(id);
 const fmt=n=>n.toLocaleString('th-TH',{minimumFractionDigits:Number.isInteger(n)?0:2,maximumFractionDigits:2});
 let tab='all', model=MODELS['iPhone 17']?'iPhone 17':Object.keys(MODELS)[0];
 
+// รายละเอียดแพ็กเกจตามค่าบริการรายเดือน: [เน็ต 5G, ความเร็วหลังสปีดหมด, โทรทุกเครือข่าย(นาที)]
+const UNL=['ไม่จำกัด','Unlimited Max Speed'];
+const PKG_INFO={
+  2199:[...UNL,1700],1999:[...UNL,1300],1699:[...UNL,1000],1499:[...UNL,650],1399:[...UNL,500],1299:[...UNL,400],
+  1199:['100 GB','2 Mbps',350],999:['70 GB','2 Mbps',320],899:['60 GB','2 Mbps',280],799:['50 GB','2 Mbps',240],
+  699:['40 GB','2 Mbps',200],599:['25 GB','2 Mbps',200],499:['20 GB','1 Mbps',200],399:['15 GB','1 Mbps',150]
+};
+function pkgInfo(pkg,name){
+  const i=PKG_INFO[pkg]; if(!i)return '';
+  const net=name.match(/เน็ต\s*(\d+)\s*GB/i); // ถ้าชื่อโปรระบุเน็ตเอง ให้ใช้ค่านั้น
+  return `<div class="sep"></div><div class="pkginfo">
+    <div><span class="lbl">เน็ต 5G</span><b>${net?net[1]+' GB':i[0]}</b></div>
+    <div><span class="lbl">จากนั้นใช้สปีด</span><b>${i[1]}</b></div>
+    <div><span class="lbl">โทรทุกเครือข่าย</span><b>${fmt(i[2])} นาที</b></div></div>`;
+}
+
 function card([,name,pkg,pre,d,min,term,tag],price,rank){
       const ok=price>=min, net=Math.max(price-d,0);
       const preEx=pre/1.07, per=pre?preEx/12:0, monthly=pkg-per;
@@ -250,6 +270,7 @@ function card([,name,pkg,pre,d,min,term,tag],price,rank){
             ${pre?`<div class="break">ค่าบริการล่วงหน้า ${fmt(pre)} (รวม VAT)<br>→ ก่อน VAT ${fmt(preEx)} ÷ 12 = หักเดือนละ ${fmt(per)}</div>`
                  :`<div class="min">ไม่มีค่าบริการล่วงหน้า</div>`}
           </div>
+          ${pkgInfo(pkg,name)}
           <div class="tags"><span class="tag">${tag}</span></div>
         </div></div>`;
 }
