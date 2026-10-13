@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>โปรโมชั่น iPhone พร้อมแพ็กเกจรายเดือน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f5f9; --card:#fff; --ink:#1c1d2b; --mute:#6b6f85; --line:#e4e6ef;
+  --red:#e3122d; --blue:#1f6fe0; --green:#12a150;
+  --grad:linear-gradient(135deg,#e3122d,#c2189a 50%,#5b3ff0);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans Thai',system-ui,sans-serif;line-height:1.45}
+header{background:var(--grad);color:#fff;padding:20px 16px 90px}
+.wrap{max-width:1100px;margin:0 auto}
+header h1{margin:0;font-size:24px;font-weight:800}
+header p{margin:4px 0 0;opacity:.85;font-size:14px}
+.panel{background:var(--card);border-radius:18px;box-shadow:0 8px 30px rgba(30,30,80,.12);padding:18px;margin:-64px auto 18px;max-width:1100px}
+.models{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.model{font:800 17px 'Noto Sans Thai';border:2px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px;cursor:pointer;color:var(--ink)}
+.model small{display:block;font-weight:500;font-size:11px;color:var(--mute)}
+.model.on{background:var(--grad);color:#fff;border-color:transparent}
+.model.on small{color:rgba(255,255,255,.85)}
+.inputrow{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.field label{display:block;font-size:13px;color:var(--mute);margin-bottom:4px}
+.money{position:relative}
+.money input{font:800 28px 'Noto Sans Thai';width:260px;max-width:100%;padding:8px 48px 8px 14px;border:2px solid var(--line);border-radius:12px;color:var(--ink)}
+.money input:focus{outline:none;border-color:#7b4ff0}
+.money span{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--mute);font-weight:500}
+.quick{display:flex;gap:6px;flex-wrap:wrap}
+.quick button,.tab{font:500 14px 'Noto Sans Thai';border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--ink)}
+.quick button:hover{border-color:#7b4ff0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.note{font-size:12px;color:var(--mute);margin-top:10px}
+section.group{max-width:1100px;margin:0 auto 24px;padding:0 16px}
+.ghead{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-weight:700}
+.ghead small{font-weight:400;opacity:.8}
+.g1 .ghead{background:#ffe9ee;color:#c40f27}.g2 .ghead{background:#e5f0ff;color:#1457b5}.g3 .ghead{background:#e3f7ec;color:#0c7a3b}.g4 .ghead{background:#f1e8ff;color:#6a2bc4}
+.g5 .ghead{background:#fff4d6;color:#8a5a00}
+.rank{background:#fff;color:#c2189a;border-radius:999px;padding:0 8px;margin-right:8px;font-size:13px}
+.tab.hl{border-color:#f5b400}.tab.hl.on{background:#f5b400;color:#3a2600;border-color:#f5b400}
+.hint{text-align:center;color:var(--mute);font-size:13px;margin:0 16px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.item{background:var(--card);border-radius:16px;border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column}
+.item.off{opacity:.45;filter:grayscale(.6)}
+.top{background:var(--grad);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-weight:700;gap:8px}
+.chip{background:rgba(255,255,255,.22);border-radius:999px;padding:1px 10px;font-size:12px;font-weight:500;white-space:nowrap}
+.body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.lbl{font-size:12px;color:var(--mute)}
+.big{font-size:26px;font-weight:800;line-height:1.1}
+.big small{font-size:13px;font-weight:500;color:var(--mute)}
+.disc{color:var(--red);font-weight:700}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.sep{border-top:1px dashed var(--line)}
+.monthly .big{color:var(--blue)}
+.vat{margin-top:4px;padding:6px 8px;background:#eaf2ff;border-radius:8px;align-items:center}
+.vatamt{font-weight:800;color:var(--blue);font-size:16px}.vatamt small{font-size:11px;font-weight:500;color:var(--mute)}
+.was{text-decoration:line-through;color:var(--mute);font-size:13px;margin-left:6px}
+.break{font-size:12px;color:var(--mute);background:#f6f7fb;border-radius:8px;padding:6px 8px;margin-top:6px}
+.min{font-size:12px;color:var(--mute)}
+.warn{font-size:12px;color:#b45309;font-weight:500}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;background:#f1f2f7;color:var(--mute);border-radius:6px;padding:1px 8px}
+footer{text-align:center;color:var(--mute);font-size:12px;padding:10px 16px 30px}
+@media(max-width:600px){header h1{font-size:20px}.money input{width:100%;font-size:24px}.money{width:100%}.field{width:100%}.models{grid-template-columns:repeat(3,1fr)}.model{font-size:15px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>โปรโมชั่น iPhone + แพ็กเกจรายเดือน</h1>
+  <p>เลือกรุ่น กรอกราคาเครื่อง แล้วนำเสนอส่วนลดและค่าบริการรายเดือนให้ลูกค้า</p>
+</div></header>
+
+<div class="panel">
+  <div class="models" id="models"></div>
+  <div class="inputrow">
+    <div class="field">
+      <label for="price" id="plabel">ราคาเครื่อง iPhone (บาท)</label>
+      <div class="money"><input id="price" inputmode="numeric" placeholder="เช่น 32,900" autocomplete="off"><span>฿</span></div>
+    </div>
+    <div class="quick" id="quick"></div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="note">ค่าบริการรายเดือนสุทธิ = ราคาแพ็กเกจ − (ค่าบริการล่วงหน้า ÷ 1.07 ÷ 12) · แล้วบวก VAT 7% กลับ · "ขึ้นไป" = ราคาเครื่องต้องไม่ต่ำกว่าที่กำหนดจึงเข้าเงื่อนไข</div>
+</div>
+
+<div id="out"></div>
+<footer>ราคาและเงื่อนไขเป็นไปตามแคมเปญที่บริษัทกำหนด · ใช้เพื่อประกอบการนำเสนอเท่านั้น
+  <div id="srcnote" style="margin-top:6px"></div>
+  <a href="admin.html" style="color:inherit;opacity:.6">Admin</a>
+</footer>
+
+<script src="promos.js"></script>
+<script>
+const GROUPS=[
+ {id:'new',cls:'g1',title:'เปิดเบอร์ใหม่ / เปลี่ยนจากเติมเงินเป็นรายเดือน',sub:'New'},
+ {id:'mnp',cls:'g2',title:'ลูกค้าย้ายค่ายเบอร์เดิมพร้อมเปิดเบอร์ใหม่',sub:'MNP Share Plan / MNP Change MSISDN 5GX'},
+ {id:'ext',cls:'g3',title:'ลูกค้ารายเดือนปัจจุบัน',sub:'Existing Share Plan / Existing Renew'},
+ {id:'mass',cls:'g4',title:'โปรเฉพาะ iPhone (Mass)',sub:'New / 5GX สำหรับ iPhone ทุกรุ่นในซีรีส์'}
+];
+
+// [group, ชื่อโปร, ราคาแพ็กเกจ, ค่าบริการล่วงหน้า(0=ไม่มี), ส่วนลดเครื่อง, ราคาเครื่องขั้นต่ำ(0=ไม่กำหนด), สัญญา(เดือน), หมายเหตุ]
+const AP='ALL Product', SP='SmartPhone / iPhone / iPad / Tablet / Mac', OM='OpenMKT';
+// ชุดที่ซ้ำกันทุกรุ่น
+const NEW_STD=[
+ ['new','New 499',499,0,1500,2400,12,AP],
+ ['new','New 499',499,321,1500,2400,6,AP],
+ ['new','New 599',599,0,2200,4400,12,AP],
+ ['new','New 599',599,535,1800,4400,6,AP],
+ ['new','New 699',699,0,2000,5900,12,AP],
+ ['new','New 699',699,749,3700,8900,12,AP],
+ ['new','New 899',899,0,3000,8900,12,AP],
+ ['new','New 899',899,749,2300,5900,6,AP],
+ ['new','New 399 (เน็ต 50GB)',399,0,1000,0,12,OM]];
+const MNP_STD=[
+ ['mnp','MNP Share Plan 699',699,0,2000,4900,12,AP],
+ ['mnp','MNP Share Plan 799',799,0,3500,5900,12,AP],
+ ['mnp','MNP Share Plan 799',799,1605,3500,5900,12,AP],
+ ['mnp','MNP Share Plan 799',799,3210,4500,5900,12,AP],
+ ['mnp','MNP Share Plan 999',999,0,5500,8900,12,AP],
+ ['mnp','MNP Share Plan 999 (100)',999,3210,5500,8900,12,AP],
+ ['mnp','MNP Share Plan 1399',1399,0,7000,14900,12,AP],
+ ['mnp','MNP Change MSISDN 5GX 999',999,0,5500,8900,12,AP],
+ ['mnp','MNP Change MSISDN 5GX 1399',1399,0,7000,14900,12,AP]];
+const RENEW=[
+ ['ext','Existing Renew 799',799,1605,3500,5900,12,SP],
+ ['ext','Existing Renew 899',899,2675,5000,8900,12,SP],
+ ['ext','Existing Renew 1199',1199,1605,5500,14900,12,SP],
+ ['ext','Existing Renew 1399',1399,0,6000,14900,12,SP]];
+
+const DEFAULT_MODELS={
+ 'iPhone 15':[...NEW_STD,...MNP_STD,...RENEW,
+  ['ext','Existing Share Plan 799',799,1605,3500,5900,12,AP],
+  ['ext','Existing Share Plan 899',899,2675,5000,8900,12,AP],
+  ['ext','Existing Share Plan 1199',1199,1605,5500,14900,12,AP],
+  ['ext','Existing Share Plan 1399',1399,0,6000,14900,12,AP]],
+ 'iPhone 16':[
+  ['new','New 499',499,0,1500,2400,12,AP],
+  ['new','New 499',499,321,1500,2400,6,AP],
+  ['new','New 599',599,0,2200,4400,12,AP],
+  ['new','New 599',599,535,1800,4400,6,AP],
+  ['new','New 699',699,0,2000,5900,12,AP],
+  ['new','New 699 (iPhone 16 ทุกรุ่น)',699,749,3700,0,12,OM],
+  ['new','New 899',899,0,3000,8900,12,AP],
+  ['new','New 899',899,749,2300,5900,6,AP],
+  ['new','New 399 (เน็ต 50GB)',399,0,1000,0,12,OM],
+  ...MNP_STD.filter(r=>r[1]!=='MNP Share Plan 999'&&r[1]!=='MNP Share Plan 1399'),
+  ['mnp','MNP Share Plan 999 (iPhone 16 ทุกรุ่น)',999,0,5500,0,12,OM],
+  ['mnp','MNP Share Plan 1399 (iPhone 16 ทุกรุ่น)',1399,0,7000,0,12,OM],
+  ...RENEW,
+  ['ext','Existing Share Plan 799 (iPhone 16 ทุกรุ่น)',799,1605,3500,0,12,OM],
+  ['ext','Existing Share Plan 899 (iPhone 16 ทุกรุ่น)',899,2675,5000,0,12,OM],
+  ['ext','Existing Share Plan 1199 (iPhone 16 ทุกรุ่น)',1199,1605,5500,0,12,OM],
+  ['ext','Existing Share Plan 1399 (iPhone 16 ทุกรุ่น)',1399,0,6000,0,12,OM],
+  ['mass','New 699',699,535,3600,0,12,'Mass'],
+  ['mass','New 899',899,963,4700,0,12,'Mass'],
+  ['mass','New 1199',1199,1284,6200,0,12,'Mass'],
+  ['mass','New 1299',1299,1605,6700,0,12,'Mass']],
+ 'iPhone 17':[
+  ...NEW_STD,
+  ['mnp','MNP Share Plan 699 (iPhone 17 Series)',699,0,2000,0,12,OM],
+  ['mnp','MNP Share Plan 799 (iPhone 17 Series)',799,0,3500,0,12,OM],
+  ['mnp','MNP Share Plan 799 (iPhone 17 Series)',799,1605,3500,0,12,OM],
+  ['mnp','MNP Share Plan 799',799,3210,4500,5900,12,AP],
+  ['mnp','MNP Share Plan 999',999,0,5500,8900,12,AP],
+  ['mnp','MNP Share Plan 999 (100)',999,3210,5500,8900,12,AP],
+  ['mnp','MNP Share Plan 1399 (iPhone 17 Series)',1399,0,7000,0,12,OM],
+  ['mnp','MNP Change MSISDN 5GX 999',999,0,5500,8900,12,AP],
+  ['mnp','MNP Change MSISDN 5GX 1399',1399,0,7000,14900,12,AP],
+  ['ext','Existing Share Plan / Renew 799 (iPhone 17 Series)',799,1605,3500,0,12,OM],
+  ['ext','Existing Renew 899',899,2675,5000,8900,12,SP],
+  ['ext','Existing Share Plan / Renew 1199 (iPhone 17 Series)',1199,1605,5500,0,12,OM],
+  ['ext','Existing Share Plan / Renew 1399 (iPhone 17 Series)',1399,0,6000,0,12,OM],
+  ['mass','New 699',699,107,3600,0,12,'Mass'],
+  ['mass','New 899',899,535,4700,0,12,'Mass'],
+  ['mass','New 1199',1199,1070,6200,0,12,'Mass'],
+  ['mass','New 1299',1299,1605,6700,0,12,'Mass'],
+  ['mass','New 1499',1499,2247,7700,0,12,'Mass']],
+ 'iPhone 18':[
+  ['new','New 399',399,0,1000,0,12,OM],
+  ['new','New 499',499,0,1500,0,12,OM],
+  ['new','New 599',599,0,2200,0,12,OM],
+  ['new','New 699',699,0,2000,0,12,OM],
+  ['new','New 699',699,749,3700,0,12,OM],
+  ['new','New 899',899,0,3000,0,12,OM],
+  ['mnp','MNP Share Plan 699',699,0,2000,0,12,'iPhone 18 Series'],
+  ['mnp','MNP Share Plan 799',799,0,3500,0,12,'iPhone 18 Series'],
+  ['mnp','MNP Share Plan 799',799,1605,3500,0,12,'iPhone 18 Series'],
+  ['mnp','MNP Share Plan 999 (ย้ายค่าย AIS)',999,0,5500,0,12,'iPhone 18 Series'],
+  ['mnp','MNP Share Plan 1399',1399,0,7000,0,12,'iPhone 18 Series'],
+  ['mnp','MNP Change MSISDN 5GX 999',999,0,5500,8900,12,AP],
+  ['mnp','MNP Change MSISDN 5GX 1399',1399,0,7000,14900,12,AP],
+  ['ext','EXT Share Plan / EXT Renew 799',799,1605,3500,0,12,'iPhone 18 Series'],
+  ['ext','EXT Share Plan / EXT Renew 1199',1199,1605,5500,0,12,'iPhone 18 Series'],
+  ['ext','EXT Share Plan / EXT Renew 1399',1399,0,6000,0,12,'iPhone 18 Series'],
+  ['mass','New 599',599,107,3100,0,12,'Mass'],
+  ['mass','New 699',699,107,3600,0,12,'Mass'],
+  ['mass','New 899',899,535,4700,0,12,'Mass'],
+  ['mass','New 5GX 999',999,1070,5200,0,12,'Mass'],
+  ['mass','New 5GX 1199',1199,1070,6200,0,12,'Mass'],
+  ['mass','New 5GX 1299',1299,1605,6700,0,12,'Mass'],
+  ['mass','New 5GX 1499',1499,2675,7700,0,12,'Mass']]
+};
+
+// ลำดับความสำคัญของข้อมูล: ที่ admin บันทึกในเครื่องนี้ > promos.js > ข้อมูลเริ่มต้นในไฟล์นี้
+let SRC='default',META=null;
+const MODELS=(()=>{
+  try{
+    const o=JSON.parse(localStorage.getItem('promoData')||'null');
+    if(o&&o.models&&Object.keys(o.models).length){SRC='local';META=o;return o.models}
+  }catch(e){}
+  if(window.PROMO_DATA&&PROMO_DATA.models&&Object.keys(PROMO_DATA.models).length){SRC='file';META=PROMO_DATA;return PROMO_DATA.models}
+  return DEFAULT_MODELS;
+})();
+
+// Other Device = โปร "ALL Product" สำหรับอุปกรณ์อื่นที่ไม่ใช่ iPhone รวมจากทุกรุ่น ตัดรายการซ้ำ
+MODELS['Other Device']=(()=>{
+  const seen=new Set(),out=[];
+  for(const rows of Object.values(MODELS))for(const r of rows){
+    if(r[7]!==AP)continue;
+    const k=r.join('|');
+    if(!seen.has(k)){seen.add(k);out.push(r)}
+  }
+  return out;
+})();
+
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString('th-TH',{minimumFractionDigits:Number.isInteger(n)?0:2,maximumFractionDigits:2});
+let tab='all', model=MODELS['iPhone 17']?'iPhone 17':Object.keys(MODELS)[0];
+
+function card([,name,pkg,pre,d,min,term,tag],price,rank){
+      const ok=price>=min, net=Math.max(price-d,0);
+      const preEx=pre/1.07, per=pre?preEx/12:0, monthly=pkg-per;
+      return `<div class="item ${price&&!ok?'off':''}">
+        <div class="top"><span>${rank?`<span class="rank">#${rank}</span>`:''}${name}</span><span class="chip">สัญญา ${term} เดือน</span></div>
+        <div class="body">
+          <div><div class="lbl">ราคาเครื่องหลังหักส่วนลด</div>
+            <div class="big">${price?(ok?fmt(net):'—'):'—'} <small>บาท</small></div>
+            <div class="row"><span class="disc">ส่วนลด −${fmt(d)}</span><span class="min">${min?`เครื่อง ${fmt(min)} ขึ้นไป`:'ไม่กำหนดราคาเครื่อง'}</span></div>
+            ${price&&!ok?`<div class="warn">ราคาเครื่องต่ำกว่าเงื่อนไข (ขั้นต่ำ ${fmt(min)})</div>`:''}
+          </div>
+          <div class="sep"></div>
+          <div class="monthly"><div class="lbl">ค่าบริการรายเดือน (ไม่รวม VAT)</div>
+            <div class="big">${fmt(monthly)} <small>บาท/เดือน</small>${pre?`<span class="was">${fmt(pkg)}</span>`:''}</div>
+            <div class="row vat"><span class="lbl">+ VAT 7% (${fmt(monthly*0.07)})</span><span class="vatamt">${fmt(monthly*1.07)} <small>บาท/เดือน</small></span></div>
+            ${pre?`<div class="break">ค่าบริการล่วงหน้า ${fmt(pre)} (รวม VAT)<br>→ ก่อน VAT ${fmt(preEx)} ÷ 12 = หักเดือนละ ${fmt(per)}</div>`
+                 :`<div class="min">ไม่มีค่าบริการล่วงหน้า</div>`}
+          </div>
+          <div class="tags"><span class="tag">${tag}</span></div>
+        </div></div>`;
+}
+
+const HIGHLIGHTS=[
+  {title:'โปรรายเดือนถูกสุด',sub:'ค่าบริการรายเดือนสุทธิ (รวม VAT) ต่ำที่สุด',icon:'💰',
+   key:r=>(r[2]-(r[3]?r[3]/1.07/12:0))*1.07, tie:r=>-r[4]},
+  {title:'โปรลดค่าเครื่องมากสุด',sub:'ส่วนลดค่าเครื่องสูงที่สุด',icon:'🏷️',
+   key:r=>-r[4], tie:r=>(r[2]-(r[3]?r[3]/1.07/12:0))},
+  {title:'คุ้มที่สุดตลอดสัญญา 12 เดือน',sub:'ราคาเครื่องหลังลด + ค่าบริการรวม VAT 12 เดือน ต่ำที่สุด',icon:'🏆',
+   key:r=>r[2]*1.07*12-r[4], tie:r=>-r[4]}
+];
+
+function render(){
+  const price=parseInt($('price').value.replace(/\D/g,''))||0;
+  let html='';
+  if(tab==='hl'){
+    const pool=MODELS[model].filter(r=>!price||price>=r[5]);
+    for(const h of HIGHLIGHTS){
+      const top=[...pool].sort((a,b)=>h.key(a)-h.key(b)||h.tie(a)-h.tie(b)).slice(0,3);
+      html+=`<section class="group g5"><div class="ghead"><div>${h.icon} ${h.title}<br><small>${h.sub}</small></div></div><div class="grid">${top.map((r,i)=>card(r,price,i+1)).join('')}</div></section>`;
+    }
+    $('out').innerHTML=(price?'':'<p class="hint">กรอกราคาเครื่องเพื่อคัดเฉพาะโปรที่เข้าเงื่อนไข</p>')+html;
+    return;
+  }
+  for(const g of GROUPS){
+    if(tab!=='all'&&tab!==g.id)continue;
+    const rows=MODELS[model].filter(r=>r[0]===g.id);
+    if(!rows.length)continue;
+    const cards=rows.map(r=>card(r,price)).join('');
+    html+=`<section class="group ${g.cls}"><div class="ghead"><div>${g.title}<br><small>${g.sub}</small></div></div><div class="grid">${cards}</div></section>`;
+  }
+  $('out').innerHTML=html||'<p style="text-align:center;color:var(--mute)">ไม่มีโปรโมชั่นในหมวดนี้</p>';
+}
+
+$('price').addEventListener('input',e=>{
+  const n=e.target.value.replace(/\D/g,'');
+  e.target.value=n?(+n).toLocaleString('en-US'):'';
+  render();
+});
+Object.keys(MODELS).forEach(m=>{
+  const b=document.createElement('button');b.className='model'+(m===model?' on':'');
+  b.innerHTML=`${m}<small>${MODELS[m].length} โปรโมชั่น</small>`;
+  b.onclick=()=>{model=m;$('plabel').textContent=m==='Other Device'?'ราคาอุปกรณ์ (บาท)':'ราคาเครื่อง iPhone (บาท)';document.querySelectorAll('.model').forEach(x=>x.classList.toggle('on',x===b));render()};
+  $('models').appendChild(b);
+});
+[['all','ทั้งหมด'],...GROUPS.map(g=>[g.id,{new:'New',mnp:'MNP',ext:'Existing / Renew',mass:'Mass'}[g.id]]),['hl','⭐ แนะนำ']].forEach(([id,t])=>{
+  const b=document.createElement('button');b.className='tab'+(id==='all'?' on':'')+(id==='hl'?' hl':'');b.textContent=t;
+  b.onclick=()=>{tab=id;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));render()};
+  $('tabs').appendChild(b);
+});
+[29900,35900,42900,48900,59900].forEach(v=>{
+  const b=document.createElement('button');b.textContent=fmt(v);
+  b.onclick=()=>{$('price').value=v.toLocaleString('en-US');render()};
+  $('quick').appendChild(b);
+});
+if(SRC!=='default'){
+  const d=META.updated?new Date(META.updated).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'}):'';
+  $('srcnote').textContent=(SRC==='local'?'ใช้ข้อมูลที่ admin บันทึกในเครื่องนี้':'ข้อมูลโปรจาก promos.js')+(d?' · อัปเดต '+d:'');
+}
+$('price').value='32,900';
+render();
+</script>
+</body>
+</html>

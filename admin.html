@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Admin อัปเดตโปรโมชั่น</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5f9;--card:#fff;--ink:#1c1d2b;--mute:#6b6f85;--line:#e4e6ef;--red:#e3122d;--blue:#1f6fe0;--green:#12a150;--amber:#b45309;
+--grad:linear-gradient(135deg,#e3122d,#c2189a 50%,#5b3ff0)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans Thai',system-ui,sans-serif;line-height:1.5}
+header{background:var(--grad);color:#fff;padding:18px 16px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+header .wrap{padding:0}
+header h1{margin:0;font-size:22px;font-weight:800}
+header a{color:#fff;font-size:14px}
+.card{background:var(--card);border-radius:16px;box-shadow:0 4px 20px rgba(30,30,80,.08);padding:18px;margin:16px 0}
+h2{margin:0 0 8px;font-size:17px}
+textarea{width:100%;min-height:220px;font:13px/1.5 ui-monospace,Consolas,monospace;border:2px solid var(--line);border-radius:12px;padding:10px;resize:vertical}
+textarea:focus{outline:none;border-color:#7b4ff0}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button{font:700 14px 'Noto Sans Thai';border:0;border-radius:10px;padding:9px 16px;cursor:pointer;background:var(--ink);color:#fff}
+button.pri{background:var(--grad)}button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+button.danger{background:#fff;color:var(--red);border:1px solid #f3b6bf}
+button:disabled{opacity:.4;cursor:not-allowed}
+.hint{font-size:13px;color:var(--mute)}
+.sum{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.pill{background:#f1f2f7;border-radius:999px;padding:3px 12px;font-size:13px;font-weight:500}
+.pill.ok{background:#e3f7ec;color:#0c7a3b}.pill.bad{background:#ffe9ee;color:#c40f27}.pill.warn{background:#fff4d6;color:var(--amber)}
+.err{background:#ffe9ee;color:#c40f27;border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:6px}
+.err code{display:block;color:var(--ink);opacity:.7;word-break:break-all}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;max-height:480px;overflow-y:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:6px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:#f6f7fb;position:sticky;top:0}
+td.n{text-align:right}tr.note td{background:#fff9e6}
+td.raw{white-space:normal;color:var(--mute);min-width:240px;font-size:12px}
+select{font:500 14px 'Noto Sans Thai';padding:6px 10px;border-radius:8px;border:1px solid var(--line)}
+.status{font-size:14px}
+.ok-msg{color:var(--green);font-weight:700}
+details{margin-top:8px;font-size:13px;color:var(--mute)}
+pre{background:#f6f7fb;border-radius:8px;padding:8px;overflow-x:auto;font-size:12px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Admin · อัปเดตโปรโมชั่น</h1>
+  <a href="index.html">← กลับไปหน้าโปร</a>
+</div></header>
+
+<div class="wrap">
+  <div class="card">
+    <h2>1. วางข้อความโปรโมชั่น</h2>
+    <div class="hint">วางทั้งหมดตามรูปแบบเดิม ขึ้นต้นด้วยหัวรุ่น เช่น <b>IPHONE17</b> แล้วตามด้วยรายการโปรบรรทัดละ 1 โปร ข้อมูลใหม่จะ<b>แทนที่ข้อมูลเดิมทั้งหมด</b> (รองรับรุ่นใหม่ เช่น IPHONE19 อัตโนมัติ)</div>
+    <textarea id="src" placeholder="IPHONE17&#9;TRUE - New 399 (เน็ต50GB) ไม่มีจ่ายล่วงหน้า ลดค่าเครื่อง 1000 บาทOpenMKT
+&#9;TRUE - New 699 จ่ายล่วงหน้า 749 ลดค่าเครื่อง 3700 บาท ราคาเครื่อง 8,900 บาท ขึ้นไป ALL Product
+&#9;TRUE-iPhone 17 Series New 699 - จ่ายล่วงหน้า 107 ลด3600 MASS
+IPHONE18&#9;..."></textarea>
+    <div class="btns">
+      <button class="pri" id="parse">วิเคราะห์ข้อมูล</button>
+      <button class="ghost" id="clear">ล้างช่อง</button>
+    </div>
+    <details><summary>ระบบอ่านอะไรจากข้อความ</summary>
+      <ul>
+        <li><b>ส่วนลด:</b> คำว่า "ลด" / "ลดค่าเครื่อง" ตามด้วยตัวเลข (แก้คำพิมพ์ผิด เช่น ลล, ล95500 ให้อัตโนมัติและแจ้งเตือน)</li>
+        <li><b>ค่าล่วงหน้า:</b> ตัวเลขหลัง "จ่าย…" ถ้ามีคำว่า "ไม่มี" = ไม่มีค่าล่วงหน้า</li>
+        <li><b>ราคาเครื่องขั้นต่ำ:</b> ตัวเลขหลัง "ราคาเครื่อง" ถ้าไม่มี = ไม่กำหนด</li>
+        <li><b>สัญญา:</b> ตัวเลขหลัง "สัญญา" ถ้าไม่มี = 12 เดือน (การคำนวณหักค่าล่วงหน้าหาร 12 เสมอ)</li>
+        <li><b>ราคาแพ็กเกจ:</b> ตัวเลข 300–3000 ตัวแรกในชื่อโปร (ไม่นับในวงเล็บ)</li>
+        <li><b>กลุ่ม:</b> MASS → Mass, Existing/EXT/Renew → Existing, MNP/ย้ายค่าย → MNP, นอกนั้น → New</li>
+        <li><b>ป้ายเงื่อนไข:</b> ALL Product, SmartPhone…, OpenMKT, Mass (ถ้าไม่ระบุ จะใช้ "iPhone N Series")</li>
+        <li>รายการซ้ำภายในรุ่นเดียวกันจะเหลืออันเดียว</li>
+      </ul>
+    </details>
+  </div>
+
+  <div class="card" id="result" hidden>
+    <h2>2. ตรวจสอบผลที่ได้</h2>
+    <div class="sum" id="sum"></div>
+    <div id="errs"></div>
+    <div style="margin:8px 0"><select id="filter"></select></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>รุ่น</th><th>กลุ่ม</th><th>ชื่อโปร</th><th>แพ็กเกจ</th><th>ล่วงหน้า</th><th>ส่วนลด</th><th>เครื่องขั้นต่ำ</th><th>สัญญา</th><th>เงื่อนไข</th><th>ข้อความต้นฉบับ</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <div class="hint" style="margin-top:6px">แถวสีเหลือง = ระบบแก้ตัวเลขที่ผิดปกติให้ ตรวจกับต้นฉบับอีกครั้ง</div>
+  </div>
+
+  <div class="card" id="publish" hidden>
+    <h2>3. ใช้งานข้อมูลใหม่</h2>
+    <div class="btns">
+      <button class="pri" id="save">บันทึกใช้งานในเครื่องนี้</button>
+      <button class="ghost" id="dl">ดาวน์โหลด promos.js (สำหรับทุกคน)</button>
+    </div>
+    <div class="hint" style="margin-top:8px">
+      <b>บันทึกในเครื่องนี้</b> = หน้าโปรบนเบราว์เซอร์นี้จะใช้ข้อมูลใหม่ทันที (คนอื่นยังไม่เห็น) เหมาะสำหรับลองดูก่อน<br>
+      <b>ดาวน์โหลด promos.js</b> = นำไฟล์ไปวางทับ <code>promos.js</code> ในโฟลเดอร์เว็บแล้ว push ขึ้น GitHub พนักงานทุกคนจะเห็นข้อมูลใหม่
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>ข้อมูลที่ใช้อยู่ในเครื่องนี้</h2>
+    <div class="status" id="current"></div>
+    <div class="btns"><button class="danger" id="reset">ล้างข้อมูลที่บันทึก (กลับไปใช้ข้อมูลเริ่มต้น/promos.js)</button></div>
+  </div>
+</div>
+
+<script src="parser.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const KEY='promoData';
+const GN={new:'New',mnp:'MNP',ext:'Existing/Renew',mass:'Mass'};
+const fmt=n=>n.toLocaleString('en-US');
+let result=null;
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function sortedModels(models){
+  const o={};
+  Object.keys(models).sort((a,b)=>(parseInt(a.replace(/\D/g,''))||0)-(parseInt(b.replace(/\D/g,''))||0)).forEach(k=>o[k]=models[k]);
+  return o;
+}
+
+function showCurrent(){
+  let txt='ยังไม่ได้บันทึกข้อมูลในเครื่องนี้ (หน้าโปรใช้ข้อมูลเริ่มต้น หรือจาก promos.js)';
+  try{
+    const o=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(o&&o.models){
+      const c=Object.entries(o.models).map(([m,r])=>`${m}: ${r.length}`).join(' · ');
+      txt=`บันทึกเมื่อ ${new Date(o.updated).toLocaleString('th-TH')} — ${c}`;
+    }
+  }catch(e){}
+  $('current').textContent=txt;
+}
+
+$('parse').onclick=()=>{
+  const text=$('src').value;
+  if(!text.trim()){alert('กรุณาวางข้อความโปรโมชั่นก่อน');return}
+  result=PromoParser.parse(text);
+  result.models=sortedModels(result.models);
+  const total=result.detail.length;
+  $('result').hidden=false;
+  $('publish').hidden=!total;
+  $('status').textContent='';
+  const fixed=result.detail.filter(d=>d.notes.length).length;
+  $('sum').innerHTML=
+    `<span class="pill ok">อ่านได้ ${total} โปร</span>`+
+    Object.entries(result.models).map(([m,r])=>`<span class="pill">${m}: ${r.length}</span>`).join('')+
+    (result.duplicates?`<span class="pill">ตัดซ้ำ ${result.duplicates}</span>`:'')+
+    (fixed?`<span class="pill warn">แก้ตัวเลขให้ ${fixed} แถว</span>`:'')+
+    (result.errors.length?`<span class="pill bad">อ่านไม่ได้ ${result.errors.length} บรรทัด</span>`:'');
+  $('errs').innerHTML=result.errors.map(e=>`<div class="err">บรรทัด ${e.line}: ${esc(e.reason)}<code>${esc(e.text)}</code></div>`).join('');
+  const f=$('filter');
+  f.innerHTML='<option value="">ทุกรุ่น</option>'+Object.keys(result.models).map(m=>`<option>${m}</option>`).join('');
+  drawRows();
+};
+$('filter').onchange=()=>drawRows();
+
+function drawRows(){
+  const m=$('filter').value;
+  $('rows').innerHTML=result.detail.filter(d=>!m||d.model===m).map(d=>{
+    const [g,name,pkg,pre,disc,min,term,tag]=d.row;
+    return `<tr class="${d.notes.length?'note':''}"><td>${d.model}</td><td>${GN[g]}</td><td>${esc(name)}</td>
+      <td class="n">${fmt(pkg)}</td><td class="n">${pre?fmt(pre):'-'}</td><td class="n">${fmt(disc)}</td>
+      <td class="n">${min?fmt(min):'ไม่กำหนด'}</td><td class="n">${term}</td><td>${esc(tag)}</td>
+      <td class="raw" title="${esc(d.notes.join(' / '))}">${esc(d.raw)}${d.notes.length?`<br><b style="color:var(--amber)">${esc(d.notes.join(' / '))}</b>`:''}</td></tr>`;
+  }).join('');
+}
+
+function payload(){return {updated:new Date().toISOString(),models:result.models}}
+
+$('save').onclick=()=>{
+  if(result.errors.length&&!confirm(`มี ${result.errors.length} บรรทัดที่อ่านไม่ได้และจะไม่ถูกรวม ต้องการบันทึกต่อหรือไม่?`))return;
+  try{
+    localStorage.setItem(KEY,JSON.stringify(payload()));
+    $('status').innerHTML='<span class="ok-msg">บันทึกแล้ว</span> — เปิด <a href="index.html">หน้าโปร</a> เพื่อดูข้อมูลใหม่';
+    showCurrent();
+  }catch(e){$('status').textContent='บันทึกไม่สำเร็จ: '+e.message}
+};
+$('dl').onclick=()=>{
+  const js='/* สร้างจาก admin.html เมื่อ '+new Date().toLocaleString('th-TH')+' */\nwindow.PROMO_DATA = '+JSON.stringify(payload(),null,1)+';\n';
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([js],{type:'text/javascript'}));
+  a.download='promos.js';a.click();URL.revokeObjectURL(a.href);
+  $('status').innerHTML='<span class="ok-msg">ดาวน์โหลดแล้ว</span> — นำไปวางทับ promos.js ในโฟลเดอร์เว็บ แล้ว push ขึ้น GitHub';
+};
+$('reset').onclick=()=>{
+  if(!confirm('ล้างข้อมูลที่บันทึกในเครื่องนี้?'))return;
+  try{localStorage.removeItem(KEY)}catch(e){}
+  showCurrent();
+};
+$('clear').onclick=()=>{$('src').value='';$('result').hidden=true;$('publish').hidden=true};
+showCurrent();
+</script>
+</body>
+</html>
