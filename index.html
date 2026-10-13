@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>โปรโมชั่น iPhone พร้อมแพ็กเกจรายเดือน</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#c2189a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="โปร True 5G">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -16,6 +23,8 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans Thai',system-ui,sans-serif;line-height:1.45}
 header{background:var(--grad);color:#fff;padding:20px 16px 90px}
 .wrap{max-width:1100px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:64px;height:64px;border-radius:16px;background:#fff;flex:none;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 header h1{margin:0;font-size:24px;font-weight:800}
 header p{margin:4px 0 0;opacity:.85;font-size:14px}
 .panel{background:var(--card);border-radius:18px;box-shadow:0 8px 30px rgba(30,30,80,.12);padding:18px;margin:-64px auto 18px;max-width:1100px}
@@ -73,6 +82,8 @@ section.group{max-width:1100px;margin:0 auto 24px;padding:0 16px}
 .min{font-size:12px;color:var(--mute)}
 .warn{font-size:12px;color:#b45309;font-weight:500}
 .pkginfo{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center}
+.pkginfo.four{grid-template-columns:1fr 1fr}
+.pkginfo b.ok{color:var(--green)}
 .pkginfo>div{background:#f6f7fb;border-radius:8px;padding:6px 4px}
 .pkginfo .lbl{display:block;font-size:10.5px;line-height:1.25}
 .pkginfo b{font-size:13px}
@@ -84,9 +95,11 @@ footer{text-align:center;color:var(--mute);font-size:12px;padding:10px 16px 30px
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <h1>โปรโมชั่น iPhone + แพ็กเกจรายเดือน</h1>
-  <p>เลือกรุ่น กรอกราคาเครื่อง แล้วนำเสนอส่วนลดและค่าบริการรายเดือนให้ลูกค้า</p>
+<header><div class="wrap brand">
+  <img class="logo" src="icons/logo-128.png" alt="True 5G" width="64" height="64">
+  <div>
+    <h1>โปรโมชั่น iPhone + แพ็กเกจรายเดือน</h1>
+  </div>
 </div></header>
 
 <div class="panel">
@@ -98,7 +111,6 @@ footer{text-align:center;color:var(--mute);font-size:12px;padding:10px 16px 30px
     </div>
   </div>
   <div class="tabs" id="tabs"></div>
-  <div class="note">ค่าบริการรายเดือนสุทธิ = ราคาแพ็กเกจ − (ค่าบริการล่วงหน้า ÷ 1.07 ÷ 12) · แล้วบวก VAT 7% กลับ · "ขึ้นไป" = ราคาเครื่องต้องไม่ต่ำกว่าที่กำหนดจึงเข้าเงื่อนไข</div>
 </div>
 
 <div id="out"></div>
@@ -108,6 +120,11 @@ footer{text-align:center;color:var(--mute);font-size:12px;padding:10px 16px 30px
 </footer>
 
 <script src="promos.js"></script>
+<script>
+// ลงทะเบียน service worker (ใช้ได้เมื่อเปิดผ่าน https เช่น GitHub Pages)
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))
+  addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
 <script>
 const GROUPS=[
  {id:'new',cls:'g1',title:'เปิดเบอร์ใหม่ / เปลี่ยนจากเติมเงินเป็นรายเดือน',sub:'New'},
@@ -253,16 +270,23 @@ const PKG_INFO={
   699:['40 GB','2 Mbps',200],599:['25 GB','2 Mbps',200],499:['20 GB','1 Mbps',200],399:['15 GB','1 Mbps',150]
 };
 // แพ็กเกจ 5GX: เน็ตเต็มสปีด + 5GX Bonus และนาทีโทรต่างจากแพ็กเกจปกติ (เฉพาะ 999 / 1199)
-const PKG_5GX={999:{gb:'80 GB',bonus:'+20 GB',call:400},1199:{gb:'120 GB',bonus:'+30 GB',call:500}};
+// inNet = โทรในเครือข่ายไม่อั้น
+const PKG_5GX={
+  999:{gb:'80 GB',bonus:'+20 GB',call:400},
+  1199:{gb:'120 GB',bonus:'+30 GB',call:500},
+  1299:{gb:'ไม่จำกัด',call:600,inNet:true},
+  1499:{gb:'ไม่จำกัด',call:800,inNet:true}
+};
 function pkgInfo(pkg,name){
   let i=PKG_INFO[pkg]; if(!i)return '';
   const net=name.match(/เน็ต\s*(\d+)\s*GB/i); // ถ้าชื่อโปรระบุเน็ตเอง ให้ใช้ค่านั้น
   const x=/5GX/i.test(name)&&PKG_5GX[pkg];
-  if(x)i=[`${x.gb} <small>${x.bonus} Bonus</small>`,i[1],x.call];
-  return `<div class="sep"></div><div class="pkginfo">
+  if(x)i=[x.bonus?`${x.gb} <small>${x.bonus} Bonus</small>`:x.gb,i[1],x.call];
+  return `<div class="sep"></div><div class="pkginfo${x&&x.inNet?' four':''}">
     <div><span class="lbl">${x?'เน็ต 5GX':'เน็ต 5G'}</span><b>${net?net[1]+' GB':i[0]}</b></div>
     <div><span class="lbl">จากนั้นใช้สปีด</span><b>${i[1]}</b></div>
-    <div><span class="lbl">โทรทุกเครือข่าย</span><b>${fmt(i[2])} นาที</b></div></div>`;
+    <div><span class="lbl">โทรทุกเครือข่าย</span><b>${fmt(i[2])} นาที</b></div>
+    ${x&&x.inNet?'<div><span class="lbl">โทรในเครือข่าย</span><b class="ok">ไม่อั้น</b></div>':''}</div>`;
 }
 
 function card([,name,pkg,pre,d,min,term,tag],price,rank){
@@ -278,7 +302,7 @@ function card([,name,pkg,pre,d,min,term,tag],price,rank){
           </div>
           <div class="sep"></div>
           <div class="monthly"><div class="lbl">ค่าบริการรายเดือน (ไม่รวม VAT)</div>
-            ${pre?`<div class="orig">ราคาแพ็กเกจปกติ <s>${fmt(pkg)}</s> <span>→ ถูกลง ${fmt(per)} บาท/เดือน</span></div>`:''}
+            ${pre?`<div class="orig">ราคาแพ็กเกจปกติ <s>${fmt(pkg)}</s></div>`:''}
             <div class="big">${fmt(monthly)} <small>บาท/เดือน</small></div>
             <div class="row vat"><span class="lbl">+ VAT 7% (${fmt(monthly*0.07)})</span><span class="vatamt">${pre?`<s class="was">${fmt(pkg*1.07)}</s> `:''}${fmt(monthly*1.07)} <small>บาท/เดือน</small></span></div>
             ${pre?`<div class="break">
