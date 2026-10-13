@@ -58,7 +58,14 @@ section.group{max-width:1100px;margin:0 auto 24px;padding:0 16px}
 .vat{margin-top:4px;padding:6px 8px;background:#eaf2ff;border-radius:8px;align-items:center}
 .vatamt{font-weight:800;color:var(--blue);font-size:16px}.vatamt small{font-size:11px;font-weight:500;color:var(--mute)}
 .was{text-decoration:line-through;color:var(--mute);font-size:13px;margin-left:6px}
-.break{font-size:12px;color:var(--mute);background:#f6f7fb;border-radius:8px;padding:6px 8px;margin-top:6px}
+.break{background:#fff4f1;border:1px solid #ffd9cf;border-radius:10px;padding:8px 10px;margin-top:8px;font-size:15px;color:var(--ink)}
+.break small{font-size:12px;color:var(--mute)}
+.break b{white-space:nowrap}
+.break .row{align-items:center}
+.break .pre{font-size:18px;font-weight:800}
+.break .calc{font-size:12px;color:var(--mute);margin:0 0 4px}
+.break .ded{border-top:1px dashed #ffc4b4;padding-top:4px}
+.break .ded b{font-size:18px;font-weight:800;color:var(--red)}
 .min{font-size:12px;color:var(--mute)}
 .warn{font-size:12px;color:#b45309;font-weight:500}
 .pkginfo{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center}
@@ -269,7 +276,10 @@ function card([,name,pkg,pre,d,min,term,tag],price,rank){
           <div class="monthly"><div class="lbl">ค่าบริการรายเดือน (ไม่รวม VAT)</div>
             <div class="big">${fmt(monthly)} <small>บาท/เดือน</small>${pre?`<span class="was">${fmt(pkg)}</span>`:''}</div>
             <div class="row vat"><span class="lbl">+ VAT 7% (${fmt(monthly*0.07)})</span><span class="vatamt">${fmt(monthly*1.07)} <small>บาท/เดือน</small></span></div>
-            ${pre?`<div class="break">ค่าบริการล่วงหน้า ${fmt(pre)} (รวม VAT)<br>→ ก่อน VAT ${fmt(preEx)} ÷ 12 = หักเดือนละ ${fmt(per)}</div>`
+            ${pre?`<div class="break">
+              <div class="row"><span>ค่าบริการล่วงหน้า <small>(รวม VAT)</small></span><b class="pre">${fmt(pre)} บาท</b></div>
+              <div class="calc">ก่อน VAT ${fmt(preEx)} ÷ 12 เดือน</div>
+              <div class="row ded"><span>หักเดือนละ</span><b>−${fmt(per)} บาท</b></div></div>`
                  :`<div class="min">ไม่มีค่าบริการล่วงหน้า</div>`}
           </div>
           ${pkgInfo(pkg,name)}
